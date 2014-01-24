@@ -89,21 +89,17 @@ void moveNode(int currentLocation,int newLocation,linkedList* head){
 	stepPtr = head->next;
 		//look for currentLocation
 	for( int i = 1; i <= currentLocation ; i++ ){
-		cout << stepPtr;
-		printf("\n");
 	    if ( i == currentLocation-2 ){ //need to stop at one previous for Ptr
 	    	// create a temporary pointer to hold current current-1's pointer
 			linkedList *tempPtr;
 	    	tempPtr = stepPtr->next;
-	    	cout << tempPtr;
-	    	printf("\n%i\n",i);
 	    	//move pionter from current to current-1
 	    	stepPtr->next = tempPtr->next;
 	    	//move forward
 	    	stepPtr = stepPtr->next;
 	    	//look for newLocation
-	    	for( i=i; i <=  newLocation; i++){
-	    		if ( i == newLocation-3 ){
+	    	for( int j=1; j <=  newLocation; j++){
+	    		if ( j == newLocation-3 ){
 	    			tempPtr->next = stepPtr->next;
 	    			stepPtr->next = tempPtr;
 	    			break;
@@ -142,27 +138,11 @@ int main(){
 	// cin >> node_number;                   // take the node number from user
 	addtoMid(5000, 3, head);
 
-	// linkedList * foo;
-	// linkedList * foo2;
-
-	// foo = head->next;
-	// cout << foo;
-	// printf("\n" );
-	// foo = foo->next;
-	// cout << foo;
-	// printf("\n");
 
 
 	outputLinkedList(head);
 
-
-	moveNode(3,5,head);
-	// foo2 = foo->next;
-	// cout << foo2;
-	// foo->next = foo2->next;
-	// printf("\n");
-	// cout << foo;
-	// printf("\n");
+	moveNode(6,4,head);
 
 	outputLinkedList(head);
 
