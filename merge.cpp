@@ -86,34 +86,43 @@ void outputLinkedList(linkedList* head){
 void moveNode(int currentLocation,int newLocation,linkedList* head){
 		// create a  pointer to step through linkedList
 	linkedList *stepPtr;
-	stepPtr = head->next;
+		// create a temporary pointer to hold current current-1's pointer
+	linkedList *tempPtr;
+	stepPtr = head;
 		//look for currentLocation
-	for( int i = 1; i <= currentLocation ; i++ ){
-	    if ( i == currentLocation-2 ){ //need to stop at one previous for Ptr
-	    	// create a temporary pointer to hold current current-1's pointer
-			linkedList *tempPtr;
+	for( int i = 0; i <= currentLocation ; i++ ){
+	    if ( i == currentLocation-2 ){ //need to stop at 2 previous for Ptr
+
 	    	tempPtr = stepPtr->next;
-	    	//move pionter from current to current-1
+	    	//update pionter to point past the one we are moving
 	    	stepPtr->next = tempPtr->next;
-	    	//move forward
-	    	stepPtr = stepPtr->next;
+	    	cout << tempPtr;printf("\n");
+	    	cout << stepPtr->next;printf("\n");
+	    	cout << stepPtr;printf("\n");
+
+	    	//start back at the top:
+	    	stepPtr = head;
 	    	//look for newLocation
-	    	for( int j=1; j <=  newLocation; j++){
-	    		if ( j == newLocation-3 ){
+	    	for( int j=0; j <=  newLocation; j++){
+	    		if( stepPtr->next == NULL ){
+	    			printf("Node %i for newLocation does not exist. "
+	    			       "Added to last location instead.\n", newLocation);
+	    			tempPtr->next = NULL;
+	    			stepPtr->next = tempPtr;
+	    			break;
+	    		}
+	    		if ( j == newLocation - 2 ){
 	    			tempPtr->next = stepPtr->next;
 	    			stepPtr->next = tempPtr;
 	    			break;
 	    		}
-	    		if( stepPtr == NULL ){
-	    			printf("Node %i does not exist.\n", newLocation);
-	    			//need to put pointer back from earlier
-	    			break;
-	    		}
 	    		stepPtr = stepPtr->next;
 	    	}
+	    	break;
 	    }
 	    if( stepPtr == NULL ){
-	    	printf("Node %i does not exist.\n", newLocation);
+	    	printf("Node %i for currentLocation does not exist. "
+	    	       "Exiting moveNode early.\n", currentLocation);
 	    	break;
 	    }
 	   stepPtr = stepPtr->next;
@@ -142,7 +151,7 @@ int main(){
 
 	outputLinkedList(head);
 
-	moveNode(6,4,head);
+	moveNode(8,2,head);
 
 	outputLinkedList(head);
 
