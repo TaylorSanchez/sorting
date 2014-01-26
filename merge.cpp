@@ -83,52 +83,74 @@ void outputLinkedList(linkedList* head){
 	printf("\n");
 }
 
-void moveNode(int currentLocation,int newLocation,linkedList* head){
-		// create a  pointer to step through linkedList
+linkedList* moveNode(int currentLocation,int newLocation,linkedList* head){
+	// create a  pointer to step through linkedList
 	linkedList *stepPtr;
-		// create a temporary pointer to hold current current-1's pointer
+	// create a temporary pointer to hold current current-1's pointer
 	linkedList *tempPtr;
 	stepPtr = head;
-		//look for currentLocation
-	for( int i = 0; i <= currentLocation ; i++ ){
-	    if ( i == currentLocation-2 ){ //need to stop at 2 previous for Ptr
-
-	    	tempPtr = stepPtr->next;
-	    	//update pionter to point past the one we are moving
-	    	stepPtr->next = tempPtr->next;
-	    	cout << tempPtr;printf("\n");
-	    	cout << stepPtr->next;printf("\n");
-	    	cout << stepPtr;printf("\n");
-
-	    	//start back at the top:
-	    	stepPtr = head;
-	    	//look for newLocation
-	    	for( int j=0; j <=  newLocation; j++){
-	    		if( stepPtr->next == NULL ){
-	    			printf("Node %i for newLocation does not exist. "
-	    			       "Added to last location instead.\n", newLocation);
-	    			tempPtr->next = NULL;
-	    			stepPtr->next = tempPtr;
-	    			break;
-	    		}
-	    		if ( j == newLocation - 2 ){
-	    			tempPtr->next = stepPtr->next;
-	    			stepPtr->next = tempPtr;
-	    			break;
-	    		}
-	    		stepPtr = stepPtr->next;
-	    	}
-	    	break;
-	    }
-	    if( stepPtr == NULL ){
-	    	printf("Node %i for currentLocation does not exist. "
-	    	       "Exiting moveNode early.\n", currentLocation);
-	    	break;
-	    }
-	   stepPtr = stepPtr->next;
-
+	//look for currentLocation
+	if ( currentLocation == 1 ){
+		tempPtr = stepPtr;
+    	head = stepPtr->next;
+    	//update pionter to point past the one we are moving
+    	stepPtr->next = tempPtr->next;
+    	//start back at the top:
+    	stepPtr = head;
+    	for( int j=0; j <=  newLocation; j++){
+    		if( stepPtr->next == NULL ){
+    			printf("When looking for newLocation, "
+    			       "Node %i, reached end of linkedList, "
+    			       "added to last Node.\n", newLocation);
+    			tempPtr->next = NULL;
+    			stepPtr->next = tempPtr;
+    			break;
+    		}
+    		else if ( j == newLocation - 2 ){
+    			tempPtr->next = stepPtr->next;
+    			stepPtr->next = tempPtr;
+    			break;
+    		}
+    		stepPtr = stepPtr->next;
+    	}
 	}
+	else {
+		for( int i = 0; i <= currentLocation ; i++ ){
+		    if( stepPtr->next == NULL ){
+		    	printf("Node %i for currentLocation does not exist. "
+		    	       "Exiting moveNode early.\n", currentLocation);
+		    	break;
+		    }
+		    //need to stop at 2 previous for Ptr
+		    else if ( i == currentLocation-2 ){
+		    	tempPtr = stepPtr->next;
+		    	//update pionter to point past the one we are moving
+		    	stepPtr->next = tempPtr->next;
+		    	//start back at the top:
+		    	stepPtr = head;
+		    	for( int j=0; j <=  newLocation; j++){
+		    		if( stepPtr->next == NULL ){
+		    			printf("Node %i for newLocation does not exist. "
+		    			       "Added to last location instead.\n", newLocation);
+		    			tempPtr->next = NULL;
+		    			stepPtr->next = tempPtr;
+		    			break;
+		    		}
+		    		else if ( j == newLocation - 2 ){
+		    			tempPtr->next = stepPtr->next;
+		    			stepPtr->next = tempPtr;
+		    			break;
+		    		}
+		    		stepPtr = stepPtr->next;
+		    	}
+		    	break;
+		    }
+			stepPtr = stepPtr->next;
+		}
+	}
+	return head;
 }
+
 
 int main(){
 	int node_number;
@@ -144,14 +166,14 @@ int main(){
 	addToEnd(341, head);
 
 	// cout << "ENTER THE NODE LOCATION TO ADD NUMBER:";
-	// cin >> node_number;                   // take the node number from user
+	// cin >> node_number;  // take the node number from user
 	addtoMid(5000, 3, head);
 
 
 
 	outputLinkedList(head);
 
-	moveNode(8,2,head);
+	head = moveNode(1,8,head);
 
 	outputLinkedList(head);
 
