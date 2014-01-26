@@ -113,6 +113,10 @@ linkedList* moveFirstNode(int newLocation, linkedList* tempPtr,
 	stepPtr->next = tempPtr->next;
 	//start back at the top:
 	stepPtr = head;
+	if ( newLocation == -1 ){
+		while( stepPtr->next != NULL ){ stepPtr = stepPtr->next; }
+		moveToLast( tempPtr, stepPtr, newLocation );
+	}
 	for( int j=0; j <=  newLocation; j++){
 		if( stepPtr->next == NULL ){
 			moveToLast(tempPtr, stepPtr, newLocation);
@@ -174,8 +178,7 @@ linkedList* moveMidNode(int currentLocation, int newLocation,
 linkedList* moveLastNode(int newLocation, linkedList* tempPtr,
                          linkedList* stepPtr, linkedList* head)
 {
-//need to rearrange some logic here for moving lastnode
-	while( stepPtr->next != NULL ){ stepPtr = stepPtr->next; }
+	while( stepPtr->next->next != NULL ){ stepPtr = stepPtr->next; }
 	tempPtr = stepPtr->next;
 	stepPtr->next = NULL;
 	stepPtr = head;
@@ -184,7 +187,6 @@ linkedList* moveLastNode(int newLocation, linkedList* tempPtr,
 		moveToLast( tempPtr, stepPtr, newLocation );
 	}
 	for ( int j=0; j <=  newLocation; j++){
-		printf("%i \n",j ); // debugging
 		if ( newLocation == 1 || newLocation == 0){
 			tempPtr->next = head;
 			head = tempPtr;
@@ -195,9 +197,7 @@ linkedList* moveLastNode(int newLocation, linkedList* tempPtr,
 			break;
 		}
 		else if ( j == newLocation - 2 ){
-			printf("asdf\n");
-			tempPtr->next = NULL; //seg fault
-			printf("asdf\n");
+			tempPtr->next = stepPtr->next;
 			stepPtr->next = tempPtr;
 			break;
 		}
@@ -207,12 +207,9 @@ linkedList* moveLastNode(int newLocation, linkedList* tempPtr,
 }
 
 linkedList* moveNode(int currentLocation,int newLocation,linkedList* head){
-	// create a  pointer to step through linkedList
 	linkedList *stepPtr;
-	// create a temporary pointer to hold current current-1's pointer
 	linkedList *tempPtr;
 	stepPtr = head;
-	//look for currentLocation
 	if ( currentLocation == -1 )
 	{
 		head = moveLastNode(newLocation, tempPtr, stepPtr, head);
@@ -225,10 +222,6 @@ linkedList* moveNode(int currentLocation,int newLocation,linkedList* head){
 		                   head);
 	}
 	return head;
-	// if (newLocation == -1)
-	// {
-	// 	/* code */
-	// }
 }
 
 int main(){
@@ -250,7 +243,7 @@ int main(){
 
 	outputLinkedList(head);
 
-	head = moveNode(-1,3,head); //add -1 to choose last one
+	head = moveNode(0,-1,head); //add -1 to choose last one
 
 	outputLinkedList(head);
 
